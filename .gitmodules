@@ -1,0 +1,6 @@
+[submodule "testdata/fork-repo"]
+	path = testdata/fork-repo
+	url = https://gitlab.com/jucacrispim/toxictest.git
+[submodule "testdata/repo"]
+	path = testdata/repo
+	url = https://gitlab.com/jucacrispim/toxictest.git
