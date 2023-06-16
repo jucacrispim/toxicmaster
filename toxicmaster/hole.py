@@ -34,22 +34,22 @@ from mongoengine.errors import NotUniqueError
 from toxiccommon.exchanges import ui_notifications
 from toxiccore import BaseToxicProtocol
 from toxiccore.utils import (LoggerMixin, datetime2string,
-                                   now, localtime2utc)
+                             now, localtime2utc)
 from . import settings
 from .build import BuildSet, Builder, Build, BuildStep
 from .consumers import RepositoryMessageConsumer
 from .exceptions import (UIFunctionNotFound,
-                                          OwnerDoesNotExist, NotEnoughPerms)
+                         OwnerDoesNotExist, NotEnoughPerms)
 from .repository import Repository
 from .waterfall import Waterfall
 
 from .slave import Slave
 from .signals import (step_started, step_finished,
-                                       build_started, build_finished,
-                                       build_added, build_cancelled,
-                                       step_output_arrived,
-                                       buildset_started, buildset_finished,
-                                       buildset_added, build_preparing)
+                      build_started, build_finished,
+                      build_added, build_cancelled,
+                      step_output_arrived,
+                      buildset_started, buildset_finished,
+                      buildset_added, build_preparing)
 from .users import User, Organization, ResetUserPasswordToken
 
 

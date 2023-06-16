@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with toxicbuild. If not, see <http://www.gnu.org/licenses/>.
 
-
 import asyncio
 from asyncio import ensure_future
 from collections import defaultdict, deque
@@ -35,8 +34,8 @@ from mongomotor.fields import (StringField, ListField, EmbeddedDocumentField,
                                IntField, EmbeddedDocumentListField)
 from toxiccore.build_config import list_builders_from_config
 from toxiccore.utils import (now, datetime2string, MatchKeysDict,
-                                   format_timedelta, LoggerMixin,
-                                   localtime2utc, set_tzinfo)
+                             format_timedelta, LoggerMixin,
+                             localtime2utc, set_tzinfo)
 from toxiccommon.exchanges import (
     notifications,
     integrations_notifications
@@ -44,10 +43,10 @@ from toxiccommon.exchanges import (
 from .document import ExternalRevisionIinfo
 from .exceptions import (DBError, ImpossibleCancellation)
 from .signals import (build_added, build_cancelled,
-                                       buildset_started, buildset_finished,
-                                       buildset_added)
+                      buildset_started, buildset_finished,
+                      buildset_added)
 from .utils import (get_build_config_type,
-                                     get_build_config_filename)
+                    get_build_config_filename)
 
 
 # The statuses used in builds  ordered by priority.

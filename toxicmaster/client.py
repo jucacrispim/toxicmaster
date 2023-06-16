@@ -22,7 +22,7 @@ from toxiccore.exceptions import ToxicClientException
 from toxiccore.utils import LoggerMixin, datetime2string
 from . import settings
 from .utils import (get_build_config_type,
-                                     get_build_config_filename)
+                    get_build_config_filename)
 
 
 MAX_PROCESS_TASKS = 10

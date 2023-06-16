@@ -33,8 +33,8 @@ from .build import BuildStep, Builder
 from .client import get_build_client
 from .document import OwnedDocument
 from .signals import (build_started, build_finished,
-                                       step_started, step_finished,
-                                       step_output_arrived, build_preparing)
+                      step_started, step_finished,
+                      step_output_arrived, build_preparing)
 from .exceptions import DBError
 
 

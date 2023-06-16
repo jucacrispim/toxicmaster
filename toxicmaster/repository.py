@@ -44,7 +44,7 @@ from .client import get_poller_client, get_secrets_client
 from .document import OwnedDocument, ExternalRevisionIinfo
 from .exceptions import RepoBranchDoesNotExist
 from .utils import (get_build_config_type,
-                                     get_build_config_filename)
+                    get_build_config_filename)
 from .signals import buildset_added
 from .slave import Slave
 
