@@ -12,3 +12,4 @@ toxicsecrets>=0.10.0
 flake8==6.0.0
 pylint==2.17.4
 pylint-mongoengine==0.5.0
+xenon==0.9.0
