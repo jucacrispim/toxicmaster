@@ -855,8 +855,8 @@ class RepositoryRevision(Document):
         if not self.body:
             return None
 
-        for l in self.body.splitlines():
-            m = re.match(pattern, l)
+        for line in self.body.splitlines():
+            m = re.match(pattern, line)
             if m:
                 return m
 
