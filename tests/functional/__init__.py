@@ -6,8 +6,6 @@ import sys
 import time
 from unittest import TestCase
 
-import bcrypt
-
 from toxiccore import BaseToxicClient
 from toxiccore.utils import bcrypt_string, log
 from toxicmaster import create_settings_and_connect
