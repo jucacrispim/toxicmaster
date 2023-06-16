@@ -7,7 +7,7 @@ import time
 from unittest import TestCase
 
 from toxiccore import BaseToxicClient
-from toxiccore.utils import bcrypt_string, log
+from toxiccore.utils import log
 from toxicmaster import create_settings_and_connect
 from toxicslave import create_settings
 from toxicpoller import create_settings as create_settings_poller
