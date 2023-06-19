@@ -20,22 +20,22 @@ if dbpass:
     DATABASE['password'] = dbpass
 
 
-amqp_host = os.environ.get('AMQPHOST', 'localhost')
-amqp_port = int(os.environ.get('AMQPPORT', 5672))
-amqp_login = os.environ.get('AMQPLOGIN')
-amqp_virtualhost = os.environ.get('AMQPVIRTUALHOST')
-amqp_password = os.environ.get('AMQPASSWORD')
+AMQP_HOST = os.environ.get('AMQPHOST', 'localhost')
+AMQP_PORT = int(os.environ.get('AMQPPORT', 5672))
+AMQP_LOGIN = os.environ.get('AMQPLOGIN')
+AMQP_VIRTUALHOST = os.environ.get('AMQPVIRTUALHOST')
+AMQP_PASSWORD = os.environ.get('AMQPASSWORD')
 
-RABBITMQ_CONNECTION = {'host': amqp_host, 'port': amqp_port}
+RABBITMQ_CONNECTION = {'host': AMQP_HOST, 'port': AMQP_PORT}
 
 if amqp_login:
-    RABBITMQ_CONNECTION['login'] = amqp_login
+    RABBITMQ_CONNECTION['login'] = AMQP_LOGIN
 
 if amqp_virtualhost:
-    RABBITMQ_CONNECTION['virtualhost'] = amqp_virtualhost
+    RABBITMQ_CONNECTION['virtualhost'] = AMQP_VIRTUALHOST
 
 if amqp_password:
-    RABBITMQ_CONNECTION['password'] = amqp_password
+    RABBITMQ_CONNECTION['password'] = AMQP_PASSWORD
 
 
 ZK_SERVERS = os.environ.get('ZK_SERVERS', 'localhost:2181').split(',')
