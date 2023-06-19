@@ -45,3 +45,6 @@ include = ["toxicmaster"]
 
 [tool.setuptools.dynamic]
 version = {attr = "toxicmaster.__version__"}
+
+[project.scripts]
+toxicmaster = "toxicmaster.cmds:main"
