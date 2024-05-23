@@ -12,7 +12,7 @@ To install it use pip:
 
 .. code-block:: sh
 
-   $ pip install toxicmaster
+   $ pip install toxicmaster --extra-index-url=https://pypi.poraodojuca.dev
 
 
 
