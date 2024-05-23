@@ -26,6 +26,9 @@ steps:
   - name: Functional tests
     command: pytest tests/functional
 
+  - name: Release
+    command: ./scripts/release.sh
+
   - name: Build docs
     command: ./scripts/build_docs.sh
 
