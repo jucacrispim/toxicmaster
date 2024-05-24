@@ -895,7 +895,12 @@ class BuildExecuter(LoggerMixin):
             slave = await build.slave
             envvars = self.repository.envvars
             if not build.external:
-                secrets = await self.repository.get_secrets()
+                try:
+                    secrets = await self.repository.get_secrets()
+                except Exception as e:
+                    self.log(str(e), level='error')
+                    self.log('secrets not available', level='error')
+                    secrets = {}
                 envvars.update(secrets)
             await slave.build(build, **envvars)
         except Exception:

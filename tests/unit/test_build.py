@@ -820,6 +820,27 @@ class BuildExecuterTest(TestCase):
     @mock.patch.object(repository.Repository, 'remove_running_build',
                        mock.Mock())
     @mock.patch.object(repository.Repository, 'get_secrets',
+                       mock.AsyncMock(side_effect=Exception))
+    @async_test
+    async def test_run_build_without_available_secrets(self):
+        build = self.executer.builds[0]
+        self.executer._execute_builds = mock.AsyncMock()
+        await self.executer._run_build(build)
+
+        self.assertTrue(
+            type(self.executer.repository).add_running_build.called)
+        self.assertTrue(
+            type(self.executer.repository).remove_running_build.called)
+        self.assertEqual(len(self.executer._queue), 1)
+        self.assertTrue(self.executer._execute_builds.called)
+        self.assertTrue(self.executer.repository.get_secrets.called)
+
+    @mock.patch.object(repository.Repository, 'add_running_build', mock.Mock())
+    @mock.patch.object(slave.Slave, 'build',
+                       mock.AsyncMock(spec=slave.Slave.build))
+    @mock.patch.object(repository.Repository, 'remove_running_build',
+                       mock.Mock())
+    @mock.patch.object(repository.Repository, 'get_secrets',
                        mock.AsyncMock(return_value={}))
     @async_test
     async def test_run_build_external(self):
