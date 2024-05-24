@@ -5,6 +5,7 @@ Changelog
 * v0.11.0
 
   - Add support to extra_indexes on python build plugin
+  - Make secrets optional to start builds
 
 * v0.10.0
 
