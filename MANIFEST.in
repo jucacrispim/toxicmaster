@@ -1,0 +1,3 @@
+recursive-include toxicmaster/templates *
+
+recursive-exclude toxicbuildmaster/templates *~
