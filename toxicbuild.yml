@@ -16,15 +16,19 @@ steps:
 
   - name: Linter checks
     command: ./scripts/run_linter.sh
+    stop_on_fail: true
 
   - name: Code complexity checks
     command: xenon toxicbuild -b B
+    stop_on_fail: true
 
   - name: Unit tests & coverage
     command: ./scripts/check_coverage.sh
+    stop_on_fail: true
 
   - name: Functional tests
     command: pytest tests/functional
+    stop_on_fail: true
 
   - name: Release
     command: ./scripts/release.sh

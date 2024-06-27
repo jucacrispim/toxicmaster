@@ -6,7 +6,7 @@ from asyncio import ensure_future
 from mongomotor import connect
 from toxiccore.conf import Settings
 
-__version__ = '0.12.0'
+__version__ = '0.12.1'
 
 settings = None
 dbconn = None

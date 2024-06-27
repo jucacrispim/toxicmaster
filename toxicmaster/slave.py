@@ -168,6 +168,12 @@ class Slave(OwnedDocument, LoggerMixin):
         cls = self.INSTANCE_CLS[self.instance_type]
         return cls(**self.instance_confs)
 
+    async def get_host(self):
+        if not self.on_demand:
+            return self.host
+
+        return await self.instance.get_ip()
+
     async def enqueue_build(self, build):
         """Marks a build as enqueued in this slave. It does not enqueue
         two times the same build, if the build is already enqueued simply
@@ -241,7 +247,7 @@ class Slave(OwnedDocument, LoggerMixin):
 
             await self.instance.start()
 
-        ip = await self.instance.get_ip()
+        ip = await self.get_host()
         if ip and self.host == self.DYNAMIC_HOST:
             self.host = ip
 
@@ -278,8 +284,9 @@ class Slave(OwnedDocument, LoggerMixin):
         """ Returns a :class:`~toxicmaster.client.BuildClient` instance
         already connected to the server.
         """
+        host = await self.get_host()
         connected_client = await get_build_client(
-            self, self.host, self.port, use_ssl=self.use_ssl,
+            self, host, self.port, use_ssl=self.use_ssl,
             validate_cert=self.validate_cert)
         return connected_client
 

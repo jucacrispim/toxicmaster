@@ -504,7 +504,11 @@ class Build(EmbeddedDocument, LoggerMixin):
         repo = await self.repository
         slave = await self.slave
         if self.status == BuildStep.RUNNING:
-            await slave.cancel_build(self)
+            try:
+                await slave.cancel_build(self)
+            except Exception:
+                self.log('Error canceling running build', level='error')
+                return False
         else:
             if slave:
                 await slave.dequeue_build(self)
@@ -512,6 +516,8 @@ class Build(EmbeddedDocument, LoggerMixin):
             self.status = 'cancelled'
             await self.update()
             build_cancelled.send(str(repo.id), build=self)
+
+        return True
 
     async def set_slave(self, slave):
         """Sets the slave for this build and increments the slave queue.

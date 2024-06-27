@@ -319,6 +319,22 @@ class BuildTest(TestCase):
 
     @mock.patch.object(build.notifications, 'publish', mock.AsyncMock(
         spec=build.notifications.publish))
+    @mock.patch.object(slave.Slave, 'cancel_build', mock.AsyncMock(
+        spec=slave.Slave.cancel_build, side_effect=Exception))
+    @async_test
+    async def test_cancel_running_error(self):
+        await self._create_test_data()
+        build_inst = self.buildset.builds[0]
+        build_inst.status = 'running'
+        slave = await build_inst.slave
+        await slave.enqueue_build(build_inst)
+        await slave.save()
+        r = await build_inst.cancel()
+        self.assertTrue(slave.cancel_build.called)
+        self.assertFalse(r)
+
+    @mock.patch.object(build.notifications, 'publish', mock.AsyncMock(
+        spec=build.notifications.publish))
     @async_test
     async def test_cancel_no_slave(self):
         await self._create_test_data()

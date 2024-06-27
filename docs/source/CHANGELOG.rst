@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+* v0.12.1
+
+  - Fix cancelation of running builds on on-demand slaves
+
 * v0.12.0
 
   - Add support to cancel running builds
