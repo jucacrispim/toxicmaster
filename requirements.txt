@@ -6,7 +6,7 @@ pytest-cov==4.1.0
 pytest-cover==3.0.0
 mongomotor>=0.16.2
 aiobotocore==2.5.0
-toxicslave>=0.10.0
+toxicslave>=0.13.0
 toxicpoller>=0.10.0
 toxicsecrets>=0.10.0
 flake8==6.0.0

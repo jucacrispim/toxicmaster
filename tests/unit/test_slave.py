@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2016-2019, 2023 Juca Crispim <juca@poraodojuca.net>
+# Copyright 2016-2019, 2023, 2024 Juca Crispim <juca@poraodojuca.dev>
 
 # This file is part of toxicbuild.
 
@@ -211,6 +211,27 @@ class SlaveTest(TestCase):
         await self.slave.build(self.build)
         self.assertTrue(bmock.called)
         self.assertTrue(self.slave._process_info.called)
+
+    @async_test
+    async def test_cancel_build(self):
+        client = MagicMock()
+        client.__enter__.return_value = client
+        bmock = Mock()
+
+        async def gc():
+
+            async def cb(build):
+                bmock()
+                return {'some': 'info'}
+
+            client.cancel_build = cb
+            return client
+
+        self.slave.get_client = gc
+        build = Mock(uuid='some-uuid')
+        await self.slave.cancel_build(build)
+
+        self.assertTrue(bmock.called)
 
     @patch.object(slave.Lock, 'acquire_write', AsyncMock(
         spec=slave.Lock.acquire_write, return_value=AsyncMock()))

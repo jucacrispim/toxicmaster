@@ -304,6 +304,21 @@ class BuildTest(TestCase):
 
     @mock.patch.object(build.notifications, 'publish', mock.AsyncMock(
         spec=build.notifications.publish))
+    @mock.patch.object(slave.Slave, 'cancel_build', mock.AsyncMock(
+        spec=slave.Slave.cancel_build))
+    @async_test
+    async def test_cancel_running(self):
+        await self._create_test_data()
+        build_inst = self.buildset.builds[0]
+        build_inst.status = 'running'
+        slave = await build_inst.slave
+        await slave.enqueue_build(build_inst)
+        await slave.save()
+        await build_inst.cancel()
+        self.assertTrue(slave.cancel_build.called)
+
+    @mock.patch.object(build.notifications, 'publish', mock.AsyncMock(
+        spec=build.notifications.publish))
     @async_test
     async def test_cancel_no_slave(self):
         await self._create_test_data()
@@ -321,7 +336,7 @@ class BuildTest(TestCase):
     async def test_cancel_impossible(self):
         await self._create_test_data()
         build_inst = self.buildset.builds[0]
-        build_inst.status = 'running'
+        build_inst.status = 'failed'
         with self.assertRaises(build.ImpossibleCancellation):
             await build_inst.cancel()
 
@@ -1059,9 +1074,9 @@ class BuildManagerTest(TestCase):
         await self.manager.add_builds_for_buildset(self.buildset, conf)
         self.assertEqual(len(self.manager.build_queues), 1)
         buildset = self.manager.build_queues[0]
-        # It already has two builds from _create_test_data and more two
+        # It already has 3 builds from _create_test_data and more two
         # from .add_builds_for_slave
-        self.assertEqual(len(buildset.builds), 4)
+        self.assertEqual(len(buildset.builds), 5)
         self.assertTrue(build.buildset_added.send.called)
 
     @mock.patch.object(build.BuildSet, 'notify', mock.AsyncMock(
@@ -1072,6 +1087,7 @@ class BuildManagerTest(TestCase):
         repository.ui_notifications, 'publish', mock.AsyncMock())
     @mock.patch.object(repository.scheduler_action, 'publish',
                        mock.AsyncMock())
+    @mock.patch.object(slave.Slave, 'cancel_build', mock.AsyncMock())
     @async_test
     async def test_add_builds(self):
         await self._create_test_data()
@@ -1524,7 +1540,7 @@ class BuildManagerTest(TestCase):
     async def test_cancel_build_impossible(self):
         await self._create_test_data()
         build = self.buildset.builds[0]
-        build.status = 'running'
+        build.status = 'fail'
         await build.update()
         self.repo.build_manager.log = mock.Mock()
         await self.repo.build_manager.cancel_build(build.uuid)
@@ -1548,6 +1564,7 @@ class BuildManagerTest(TestCase):
     @mock.patch.object(build.integrations_notifications, 'publish',
                        mock.AsyncMock(
                            spec=build.integrations_notifications.publish))
+    @mock.patch.object(slave.Slave, 'cancel_build', mock.AsyncMock())
     @async_test
     async def test_cancel_previous_pending(self):
         await self._create_test_data()
@@ -1556,7 +1573,7 @@ class BuildManagerTest(TestCase):
         await self.repo.build_manager.cancel_previous_pending(bs)
         old_bs = await build.BuildSet.objects.get(id=self.buildset.id)
         self.assertEqual(old_bs.builds[0].status, 'cancelled')
-        self.assertEqual(old_bs.get_status(), 'running')
+        self.assertTrue(slave.Slave.cancel_build.called)
 
     @mock.patch.object(build.notifications, 'publish', mock.AsyncMock(
         spec=build.notifications.publish))
@@ -1633,7 +1650,13 @@ class BuildManagerTest(TestCase):
                                           named_tree='v0.1',
                                           builder=self.builder,
                                           status='running', number=1)
+        self.done_build = build.Build(repository=self.repo,
+                                      slave=self.slave, branch='master',
+                                      named_tree='v0.1',
+                                      builder=self.builder,
+                                      status='success', number=1)
         self.buildset.builds.append(self.consumed_build)
+        self.buildset.builds.append(self.done_build)
 
         await self.buildset.save()
 

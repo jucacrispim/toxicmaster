@@ -250,6 +250,39 @@ class BuildClientTest(TestCase):
 
         self.assertTrue(inst.connect.called)
 
+    @async_test
+    async def test_cancel_build(self):
+        self.client.write = AsyncMock()
+        self.client.get_response = AsyncMock()
+
+        slave_inst = slave.Slave(name='slv', host='localhost', port=1234,
+                                 token='123', owner=self.owner)
+        await slave_inst.save()
+
+        repo = repository.Repository(name='repo', url='git@somewhere.com',
+                                     slaves=[slave_inst], update_seconds=300,
+                                     vcs_type='git', owner=self.owner)
+        await repo.save()
+        revision = repository.RepositoryRevision(
+            commit='sdafj', repository=repo, branch='master', commit_date=now,
+            author='ze', title='huehue')
+
+        await revision.save()
+        builder = build.Builder(repository=repo, name='b1')
+        await builder.save()
+
+        buildinstance = build.Build(repository=repo, slave=slave_inst,
+                                    builder=builder, branch='master',
+                                    named_tree='123sdf09')
+
+        expected = {'action': 'cancel_build',
+                    'token': slave_inst.token,
+                    'body': {'build_uuid': str(buildinstance.uuid)}}
+
+        await self.client.cancel_build(buildinstance)
+        called = self.client.write.call_args_list[0][0][0]
+        self.assertEqual(expected, called)
+
 
 class PollerClientTest(TestCase):
 

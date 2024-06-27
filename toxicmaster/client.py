@@ -94,6 +94,7 @@ class BuildClient(BaseToxicClient, LoggerMixin):
         data = {'action': 'build',
                 'token': slave.token,
                 'body': {'repo_url': repository.get_url(),
+                         'build_uuid': str(build.uuid),
                          'envvars': envvars or {},
                          'repo_id': str(repository.id),
                          'vcs_type': repository.vcs_type,
@@ -114,6 +115,16 @@ class BuildClient(BaseToxicClient, LoggerMixin):
 
             build_info = r.get('body')
             yield build_info
+
+    async def cancel_build(self, build):
+        slave = await build.slave
+        data = {'action': 'cancel_build',
+                'token': slave.token,
+                'body': {'build_uuid': str(build.uuid)}}
+
+        await self.write(data)
+        r = await self.get_response()
+        return r
 
 
 async def get_build_client(slave, addr, port, use_ssl=True,

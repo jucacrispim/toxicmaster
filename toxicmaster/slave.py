@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2016-2020, 2023 Juca Crispim <juca@poraodojuca.net>
+# Copyright 2016-2020, 2023, 2024 Juca Crispim <juca@poraodojuca.dev>
 
 # This file is part of toxicbuild.
 
@@ -377,6 +377,13 @@ class Slave(OwnedDocument, LoggerMixin):
 
         finally:
             await self.rm_running_repo(repo.id)
+
+    async def cancel_build(self, build):
+        """Connects to a build server and asks for a build cancelation
+        """
+
+        with (await self.get_client()) as client:
+            await client.cancel_build(build)
 
     async def _process_info(self, build, repo, info):
         """ Method used to process information sent by

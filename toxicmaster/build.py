@@ -495,17 +495,23 @@ class Build(EmbeddedDocument, LoggerMixin):
         await integrations_notifications.publish(msg)
 
     async def cancel(self):
-        """Cancel the build if it is not started yet."""
-        if self.status != type(self).PENDING:
+        """Cancel the build (oh, really?)"""
+
+        cancel_statuses = [type(self).PENDING, BuildStep.RUNNING]
+        if self.status not in cancel_statuses:
             raise ImpossibleCancellation
 
-        self.status = 'cancelled'
         repo = await self.repository
         slave = await self.slave
-        if slave:
-            await slave.dequeue_build(self)
-        await self.update()
-        build_cancelled.send(str(repo.id), build=self)
+        if self.status == BuildStep.RUNNING:
+            await slave.cancel_build(self)
+        else:
+            if slave:
+                await slave.dequeue_build(self)
+
+            self.status = 'cancelled'
+            await self.update()
+            build_cancelled.send(str(repo.id), build=self)
 
     async def set_slave(self, slave):
         """Sets the slave for this build and increments the slave queue.
@@ -1179,9 +1185,10 @@ class BuildManager(LoggerMixin):
         """
 
         repo = await buildset.repository
+        cancel_statuses = [Build.PENDING, BuildStep.RUNNING]
         to_cancel = type(buildset).objects(
             repository=repo, branch=buildset.branch,
-            builds__status=Build.PENDING, created__lt=buildset.created)
+            builds__status__in=cancel_statuses, created__lt=buildset.created)
 
         async for buildset in to_cancel:  # pragma no branch stupid coverage
             for build in buildset.builds:
