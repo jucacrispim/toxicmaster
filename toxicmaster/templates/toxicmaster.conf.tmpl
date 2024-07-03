@@ -28,13 +28,13 @@ AMQP_PASSWORD = os.environ.get('AMQPASSWORD')
 
 RABBITMQ_CONNECTION = {'host': AMQP_HOST, 'port': AMQP_PORT}
 
-if amqp_login:
+if AMQP_LOGIN:
     RABBITMQ_CONNECTION['login'] = AMQP_LOGIN
 
-if amqp_virtualhost:
+if AMQP_VIRTUALHOST:
     RABBITMQ_CONNECTION['virtualhost'] = AMQP_VIRTUALHOST
 
-if amqp_password:
+if AMQP_PASSWORD:
     RABBITMQ_CONNECTION['password'] = AMQP_PASSWORD
 
 

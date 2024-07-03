@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+* v0.12.2
+
+  - Fix config template
+
 * v0.12.1
 
   - Fix cancelation of running builds on on-demand slaves
