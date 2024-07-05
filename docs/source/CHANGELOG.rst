@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+* v0.12.3
+
+  - Fix build steps with status cancelled
+
 * v0.12.2
 
   - Fix config template
