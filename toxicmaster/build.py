@@ -183,7 +183,8 @@ class BuildStep(EmbeddedDocument):
     SUCCESS = 'success'
     EXCEPTION = 'exception'
     WARNING = 'warning'
-    STATUSES = [RUNNING, FAIL, SUCCESS, EXCEPTION, WARNING]
+    CANCELLED = 'cancelled'
+    STATUSES = [RUNNING, FAIL, SUCCESS, EXCEPTION, WARNING, CANCELLED]
 
     repository = ReferenceField('toxicmaster.Repository', required=True)
     """A referece to :class:`~toxicmaster.repository.Repository`
@@ -312,9 +313,8 @@ class Build(EmbeddedDocument, LoggerMixin):
     DoesNotExist = Builder.DoesNotExist
 
     PENDING = 'pending'
-    CANCELLED = 'cancelled'
     PREPARING = 'preparing'
-    STATUSES = BuildStep.STATUSES + [PENDING, CANCELLED, PREPARING]
+    STATUSES = BuildStep.STATUSES + [PENDING, PREPARING]
     CONFIG_TYPES = ['py', 'yaml']
 
     uuid = UUIDField(required=True, default=lambda: uuid4())

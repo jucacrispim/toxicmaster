@@ -100,6 +100,17 @@ class BuildStepTest(TestCase):
         with self.assertRaises(build.BuildStep.DoesNotExist):
             await build.BuildStep.get(str(step_uuid))
 
+    @mock.patch.object(build.BuildSet, 'notify', mock.AsyncMock(
+        spec=build.BuildSet.notify))
+    @async_test
+    async def test_step_cancelled(self):
+        await self._create_test_data()
+        await self.buildset.builds[0].update()
+        self.buildset.builds[0].steps[0].status = 'cancelled'
+        await self.buildset.builds[0].update()
+        await self.buildset.save()
+        self.assertEqual(self.buildset.builds[0].steps[0].status, 'cancelled')
+
     async def _create_test_data(self):
         self.owner = users.User(email='a@a.com', password='asfd')
         await self.owner.save()
