@@ -19,10 +19,10 @@
 # pylint: disable-all
 
 import asyncio
+import importlib
 import os
 import sys
 from time import sleep
-import pkg_resources
 from secrets import token_urlsafe
 import shutil
 
@@ -133,8 +133,8 @@ def create(root_dir, notifications_token='', poller_token='', no_token=False):
     os.makedirs(root_dir)
 
     template_fname = 'toxicmaster.conf.tmpl'
-    template_dir = pkg_resources.resource_filename('toxicmaster',
-                                                   'templates')
+    template_dir = importlib.resources.files(
+        'toxicnotifications').joinpath('templates')
     template_file = os.path.join(template_dir, template_fname)
     dest_file = os.path.join(root_dir, 'toxicmaster.conf')
     shutil.copyfile(template_file, dest_file)
