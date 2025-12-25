@@ -2,6 +2,11 @@ Changelog
 =========
 
 
+* v0.12.4
+
+  - Update mongomotor
+  - Remove pkg_resources in favor of importlib
+
 * v0.12.3
 
   - Fix build steps with status cancelled
