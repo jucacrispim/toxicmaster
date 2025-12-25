@@ -138,10 +138,9 @@ class Builder(SerializeMixin, Document):
     async def get_status(self):
         """Returns the builder status."""
 
-        try:
-            qs = BuildSet.objects(builds__builder=self).order_by('-created')
-            last_buildset = await qs[0]
-        except (IndexError, AttributeError):
+        qs = BuildSet.objects(builds__builder=self).order_by('-created')
+        last_buildset = await qs[0]
+        if not last_buildset:
             status = 'idle'
         else:
             statuses = []
@@ -282,8 +281,8 @@ class BuildStep(EmbeddedDocument):
             }},
         ]
 
-        r = await BuildSet.objects().aggregate(pipeline).to_list(1)
-
+        r = await BuildSet.objects().aggregate(pipeline)
+        r = await r.to_list(1)
         try:
             step_doc = r[0]['steps'][0]
         except IndexError:
@@ -468,7 +467,8 @@ class Build(EmbeddedDocument, LoggerMixin):
             }}
         ]
 
-        r = await BuildSet.objects().aggregate(pipeline).to_list(1)
+        r = await BuildSet.objects().aggregate(pipeline)
+        r = await r.to_list(1)
         try:
             build_doc = r[0]['builds'][0]
         except IndexError:
@@ -850,8 +850,8 @@ class BuildSet(SerializeMixin, LoggerMixin, Document):
               'author': '$doc.author'}},
 
         ]
-        buildset_doc = (await cls.objects(**kwargs).aggregate(
-            pipeline).to_list(1))[0]
+        buildset_doc = await cls.objects(**kwargs).aggregate(pipeline)
+        buildset_doc = (await buildset_doc.to_list(1))[0]
         buildset = cls._from_aggregate(buildset_doc)
         return buildset
 
