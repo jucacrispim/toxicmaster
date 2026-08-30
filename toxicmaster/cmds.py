@@ -134,7 +134,7 @@ def create(root_dir, notifications_token='', poller_token='', no_token=False):
 
     template_fname = 'toxicmaster.conf.tmpl'
     template_dir = importlib.resources.files(
-        'toxicnotifications').joinpath('templates')
+        'toxicmaster').joinpath('templates')
     template_file = os.path.join(template_dir, template_fname)
     dest_file = os.path.join(root_dir, 'toxicmaster.conf')
     shutil.copyfile(template_file, dest_file)
