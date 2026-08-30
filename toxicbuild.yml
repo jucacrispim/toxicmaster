@@ -2,7 +2,7 @@ language: python
 docker: true
 
 versions:
-  - '3.11'
+  - '3.13'
 
 extra_indexes:
   - 'https://pypi.poraodojuca.dev'
