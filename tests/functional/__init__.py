@@ -142,7 +142,7 @@ def wait_master_to_be_alive(root_dir):
             i += step
 
     if not alive:
-        log(f'Master did not start at {HOST}:{PORT} in {limit} seconds',
+        log(f'Master did not start at {HOST}: {PORT} in {limit} seconds',
             level='error')
         logfile = os.path.join(root_dir, 'toxicmaster.log')
         os.system(f'tail --lines 100 {logfile}')
