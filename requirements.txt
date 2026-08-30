@@ -1,10 +1,10 @@
 # put your requirements here
 toxiccore>=0.13.1
-toxiccommon>=0.10.0
+toxiccommon==0.11.0
 pytest==7.3.2
 pytest-cov==4.1.0
 pytest-cover==3.0.0
-mongomotor>=0.17.1
+mongomotor==0.17.1
 aiobotocore==2.5.0
 toxicslave>=0.13.0
 toxicpoller>=0.10.0
