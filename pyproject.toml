@@ -15,7 +15,7 @@ description = "toxicmaster: My super cool project"
 readme = "README.md"
 
 dependencies = [
-    'toxiccore>=0.11.0',
+    'toxiccore==0.13.1',
     'toxiccommon==0.11.0',
     'mongomotor==0.17.1',
     'aiobotocore==2.5.0',
