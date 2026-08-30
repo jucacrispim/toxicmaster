@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+* v0.12.5
+
+  - Update toxiccommon
+
 * v0.12.4
 
   - Update mongomotor
