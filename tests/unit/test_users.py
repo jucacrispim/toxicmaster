@@ -188,8 +188,8 @@ class ResetUserPasswordTokenTest(TestCase):
 
     @async_test
     async def tearDown(self):
-        users.User.drop_collection()
-        users.ResetUserPasswordToken.drop_collection()
+        await users.User.drop_collection()
+        await users.ResetUserPasswordToken.drop_collection()
 
     @async_test
     async def test_create(self):

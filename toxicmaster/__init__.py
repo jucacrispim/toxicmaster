@@ -2,7 +2,7 @@
 
 # pylint: disable-all
 
-from asyncio import ensure_future
+import asyncio
 from mongomotor import connect
 from toxiccore.conf import Settings
 
@@ -35,4 +35,9 @@ def create_scheduler():
     global scheduler
 
     scheduler = TaskScheduler()
-    ensure_future(scheduler.start())
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    loop.create_task(scheduler.start())

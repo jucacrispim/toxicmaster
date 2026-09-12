@@ -22,7 +22,7 @@ from tests import async_test
 
 
 class TestDoc(document.OwnedDocument):
-    pass
+    __test__ = False
 
 
 class OwnedDocuentTest(TestCase):

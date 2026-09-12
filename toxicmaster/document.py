@@ -95,13 +95,16 @@ class OwnedDocument(Document):
         document owns.
         """
 
-        if hasattr(owner, 'member_of'):
+        # we check the field in the class instead of using ``hasattr``
+        # because accessing an async reference field creates a coroutine
+        # that would never be awaited.
+        if 'member_of' in type(owner)._fields:
             member_of = await owner.member_of
             member_of = [ref.id for ref in member_of]
         else:
             member_of = [owner.id]
 
-        if hasattr(owner, 'organizations'):
+        if 'organizations' in type(owner)._fields:
             organizations = await owner.organizations
             organizations = [ref.id for ref in organizations]
         else:
