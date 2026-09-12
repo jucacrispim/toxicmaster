@@ -184,6 +184,11 @@ class SlaveTest(TestCase):
         r = await self.slave.build(self.build)
 
         self.assertIs(r, False)
+        # even if the instance fails to start, the slave must not stay
+        # marked as having a running build
+        await self.slave.reload()
+        self.assertFalse(self.slave.running_count)
+        self.assertFalse(self.slave.running_repos)
 
     @patch.object(slave.Lock, 'acquire_write', AsyncMock(
         spec=slave.Lock.acquire_write, return_value=AsyncMock()))

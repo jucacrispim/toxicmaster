@@ -359,18 +359,18 @@ class Slave(OwnedDocument, LoggerMixin):
         """
         repo = await build.repository
         await self.add_running_repo(repo.id)
-        await self.dequeue_build(build)
-        build.status = build.PREPARING
-        await build.update()
-        build_preparing.send(str(repo.id), build=build)
         try:
-            await self.start_instance()
-        except Exception:
-            tb = traceback.format_exc()
-            await self._finish_build_start_exception(build, repo, tb)
-            return False
+            await self.dequeue_build(build)
+            build.status = build.PREPARING
+            await build.update()
+            build_preparing.send(str(repo.id), build=build)
+            try:
+                await self.start_instance()
+            except Exception:
+                tb = traceback.format_exc()
+                await self._finish_build_start_exception(build, repo, tb)
+                return False
 
-        try:
             with (await self.get_client()) as client:
                 try:
                     async for build_info in client.build(
