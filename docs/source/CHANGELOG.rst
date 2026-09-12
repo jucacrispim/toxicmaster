@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+* v0.12.7
+
+  - Fix slave running builds in case of failure starting instance
+
 * v0.12.6
 
   - Update toxiccore
