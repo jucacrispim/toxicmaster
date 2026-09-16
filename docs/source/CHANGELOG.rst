@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+* v0.12.8
+
+  - Print token with a stable marker
+
 * v0.12.7
 
   - Fix slave running builds in case of failure starting instance
