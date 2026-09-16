@@ -116,6 +116,7 @@ def create_token(conffile, show_encrypted=False):
     if show_encrypted:
         print('Created encrypted token:{}'.format(encrypted_token))
     print('Created access token:{}'.format(access_token))
+    print('TOKEN:{}'.format(access_token))
     return access_token
 
 
@@ -177,6 +178,7 @@ def create_user(configfile, email=None, password=None, superuser=False,
         user = loop.run_until_complete(
             _create_regular_user(email, password, superuser))
 
+    print('USER_ID:{}'.format(user.id))
     return user
 
 
