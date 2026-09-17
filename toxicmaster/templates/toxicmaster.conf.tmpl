@@ -52,7 +52,6 @@ ACCESS_TOKEN = os.environ.get('MASTER_ENCRYPTED_TOKEN', '{{ACCESS_TOKEN}}')
 
 NOTIFICATIONS_API_URL = os.environ.get('NOTIFICATIONS_API_URL',
                                        'http://localhost:9432')
-NOTIFICATIONS_API_TOKEN = os.environ.get('NOTIFICATIONS_API_TOKEN', '')
 
 USE_SSL = os.environ.get('MASTER_USE_SSL', '0') == '1'
 CERTFILE = os.environ.get('MASTER_CERTFILE')
@@ -63,3 +62,9 @@ POLLER_PORT = os.environ.get('POLLER_PORT', 9922)
 POLLER_USES_SSL = os.environ.get('POLLER_USES_SSL', '0') == '1'
 VALIDATE_CERT_POLLER = os.environ.get('VALIDATE_CERT_POLLER', '0') == '1'
 POLLER_TOKEN = os.environ.get('POLLER_TOKEN', '{{POLLER_TOKEN}}')
+
+SECRETS_HOST = os.environ.get('SECRETS_HOST', 'localhost')
+SECRETS_PORT = int(os.environ.get('SECRETS_PORT', 9745))
+SECRETS_USES_SSL = os.environ.get('SECRETS_USES_SSL', '0') == '1'
+VALIDATE_CERT_SECRETS = os.environ.get('VALIDATE_CERT_SECRETS', '0') == '1'
+SECRETS_TOKEN = os.environ.get('SECRETS_TOKEN', '{{SECRETS_TOKEN}}')

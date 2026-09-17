@@ -121,11 +121,11 @@ def create_token(conffile, show_encrypted=False):
 
 
 @command
-def create(root_dir, notifications_token='', poller_token='', no_token=False):
+def create(root_dir, secrets_token='', poller_token='', no_token=False):
     """ Creates a new toxicmaster environment.
 
     :param --root_dir: Root directory for toxicmaster.
-    :param --notifications-token: The auth token for the output web api.
+    :param --secrets-token: The auth token for the secrets server.
     :param --poller-token: The auth token for the poller.
     :param --no-token: Should we create a access token?
     """
@@ -147,8 +147,7 @@ def create(root_dir, notifications_token='', poller_token='', no_token=False):
     with open(dest_file, 'r') as fd:
         content = fd.read()
 
-    content = content.replace('{{NOTIFICATIONS_API_TOKEN}}',
-                              notifications_token)
+    content = content.replace('{{SECRETS_TOKEN}}', secrets_token)
     content = content.replace('{{POLLER_TOKEN}}', poller_token)
     with open(dest_file, 'w') as fd:
         fd.write(content)

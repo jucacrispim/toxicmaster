@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+* v0.12.10
+
+  - Add ``SECRETS_*`` settings to the config template and replace the
+    ``--notifications-token`` option of ``create`` with ``--secrets-token``
+    (the notifications api token was unused).
+
 * v0.12.9
 
   - Fix missing ``importlib.resources`` import that broke ``create`` on a
