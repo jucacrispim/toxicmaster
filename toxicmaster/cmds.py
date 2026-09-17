@@ -19,7 +19,7 @@
 # pylint: disable-all
 
 import asyncio
-import importlib
+import importlib.resources
 import os
 import sys
 from time import sleep
