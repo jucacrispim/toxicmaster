@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+* v0.12.11
+
+  - Update mongomotor
+
 * v0.12.10
 
   - Add ``SECRETS_*`` settings to the config template and replace the
